@@ -95,3 +95,17 @@ app.delete('/api/dosyalar/:id', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Backend veritabanı desteğiyle ${PORT} portunda hazır!`);
 });
+
+// Görev durumu güncelleme (PUT)
+app.put('/api/rutinler/:id', (req, res) => {
+  const { id } = req.params;
+  const db = readData();
+  const rutin = db.rutinler.find((r) => r.id === Number(id));
+  if (rutin) {
+    rutin.tamamlandi = !rutin.tamamlandi;
+    saveData(db);
+    res.json(rutin);
+  } else {
+    res.status(404).json({ mesaj: 'Görev bulunamadı' });
+  }
+});
