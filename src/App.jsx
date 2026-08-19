@@ -1,24 +1,39 @@
 import React, { useState } from 'react';
 import NotDefteri from './NotDefteri';
+import Rutinler from './Rutinler';
+import Dosyalar from './Dosyalar';
 
 function App() {
   const [aktifTab, setAktifTab] = useState('notlar');
 
   return (
-    <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h2>Kişisel Çalışma Alanı</h2>
+    <div className="app-container">
+      <h2>✨ Kişisel Çalışma Alanı</h2>
       
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-        <button onClick={() => setAktifTab('notlar')}>Not Defteri</button>
-        <button onClick={() => setAktifTab('rutinler')}>Günlük Rutin & Görevler</button>
-        <button onClick={() => setAktifTab('dosyalar')}>Dosyalar & Slaytlar</button>
+      <div className="tab-buttons">
+        <button 
+          className={aktifTab === 'notlar' ? 'active' : ''} 
+          onClick={() => setAktifTab('notlar')}
+        >
+          📝 Not Defteri
+        </button>
+        <button 
+          className={aktifTab === 'rutinler' ? 'active' : ''} 
+          onClick={() => setAktifTab('rutinler')}
+        >
+          📅 Rutinler
+        </button>
+        <button 
+          className={aktifTab === 'dosyalar' ? 'active' : ''} 
+          onClick={() => setAktifTab('dosyalar')}
+        >
+          📁 Dosyalar
+        </button>
       </div>
 
-      <hr />
-
       {aktifTab === 'notlar' && <NotDefteri />}
-      {aktifTab === 'rutinler' && <div><h3>Günlük Rutin Bölümü</h3><p>Buraya görev listesi gelecek...</p></div>}
-      {aktifTab === 'dosyalar' && <div><h3>Dosya & Slayt Yönetimi</h3><p>Buraya dökümanlar gelecek...</p></div>}
+      {aktifTab === 'rutinler' && <Rutinler />}
+      {aktifTab === 'dosyalar' && <Dosyalar />}
     </div>
   );
 }

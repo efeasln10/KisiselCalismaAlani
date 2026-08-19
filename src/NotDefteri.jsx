@@ -4,49 +4,48 @@ function NotDefteri() {
   const [notlar, setNotlar] = useState([]);
   const [yeniNot, setYeniNot] = useState('');
 
-  // 1. Sayfa yüklendiğinde backend'deki notları çek
   useEffect(() => {
     fetch('http://localhost:5000/api/notlar')
       .then((res) => res.json())
-      .then((data) => setNotlar(data))
-      .catch((err) => console.error('Notlar çekilirken hata:', err));
+      .then((data) => setNotlar(data));
   }, []);
 
-  // 2. Yeni notu backend'e gönder ve listeyi güncelle
   const notEkle = () => {
-    if (yeniNot.trim() === '') return;
-
+    if (!yeniNot.trim()) return;
     fetch('http://localhost:5000/api/notlar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ metin: yeniNot }),
     })
       .then((res) => res.json())
-      .then((eklenenNot) => {
-        setNotlar([...notlar, eklenenNot]);
+      .then((eklenen) => {
+        setNotlar([...notlar, eklenen]);
         setYeniNot('');
-      })
-      .catch((err) => console.error('Not eklenirken hata:', err));
+      });
+  };
+
+  const notSil = (id) => {
+    fetch(`http://localhost:5000/api/notlar/${id}`, { method: 'DELETE' })
+      .then(() => setNotlar(notlar.filter((n) => n.id !== id)));
   };
 
   return (
-    <div style={{ marginTop: '20px' }}>
-      <h3>📝 Not Defteri</h3>
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
+    <div>
+      <div className="input-group">
         <input
           type="text"
           placeholder="Notunuzu yazın..."
           value={yeniNot}
           onChange={(e) => setYeniNot(e.target.value)}
-          style={{ flex: 1, padding: '8px' }}
         />
-        <button onClick={notEkle}>Ekle</button>
+        <button className="btn-primary" onClick={notEkle}>Ekle</button>
       </div>
 
-      <ul>
-        {notlar.map((not) => (
-          <li key={not.id} style={{ marginBottom: '8px' }}>
-            {not.metin}
+      <ul className="item-list">
+        {notlar.map((n) => (
+          <li key={n.id} className="item-card">
+            <span>{n.metin}</span>
+            <button className="btn-delete" onClick={() => notSil(n.id)}>Sil</button>
           </li>
         ))}
       </ul>
