@@ -144,3 +144,25 @@ app.delete('/api/rutinler/:id', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Backend ${PORT} portunda hazır!`);
 });
+
+// Yeni Klasör Ekleme (Hata Korumalı)
+app.post('/api/klasorler', (req, res) => {
+  try {
+    const data = readData();
+    const { klasorAdi } = req.body;
+    
+    // klasorler dizisi yoksa baştan tanımla
+    if (!data.klasorler) {
+      data.klasorler = ['Genel', 'Ders Notları', 'Projeler'];
+    }
+
+    if (klasorAdi && !data.klasorler.includes(klasorAdi)) {
+      data.klasorler.push(klasorAdi);
+      writeData(data);
+    }
+    res.json(data.klasorler);
+  } catch (err) {
+    console.error('Klasör ekleme hatası:', err);
+    res.status(500).json({ error: 'Klasör eklenemedi' });
+  }
+});
