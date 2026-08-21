@@ -1,8 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
-
-ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Rutinler() {
   const [rutinler, setRutinler] = useState([]);
@@ -19,7 +15,6 @@ function Rutinler() {
     rutinleriGetir();
   }, []);
 
-  // Rutin Ekleme
   const rutinEkle = (e) => {
     e.preventDefault();
     if (!yeniRutin.trim()) return;
@@ -37,7 +32,6 @@ function Rutinler() {
       .catch((err) => console.error('Ekleme hatası:', err));
   };
 
-  // Tik Atma (Durum Değiştirme)
   const durumDegistir = (id, mevcutDurum) => {
     fetch(`http://localhost:5001/api/rutinler/${id}`, {
       method: 'PUT',
@@ -45,44 +39,65 @@ function Rutinler() {
       body: JSON.stringify({ tamamlandi: !mevcutDurum }),
     })
       .then(() => rutinleriGetir())
-      .catch((err) => console.error('Guncelleme hatasi:', err));
+      .catch((err) => console.error('Güncelleme hatası:', err));
   };
 
-  // Rutin Silme
   const rutinSil = (id) => {
     fetch(`http://localhost:5001/api/rutinler/${id}`, { method: 'DELETE' })
       .then(() => rutinleriGetir());
   };
 
-  // Pasta Grafiği İçin Hesaplamalar
-  const tamamlananSayisi = rutinler.filter((r) => r.tamamlandi).length;
-  const kalanSayisi = rutinler.length - tamamlananSayisi;
-
-  const chartData = {
-    labels: ['Tamamlanan', 'Kalan'],
-    datasets: [
-      {
-        data: [tamamlananSayisi, kalanSayisi],
-        backgroundColor: ['#4caf50', '#ff9800'],
-        borderColor: ['#ffffff', '#ffffff'],
-        borderWidth: 2,
-      },
-    ],
-  };
+  const toplam = rutinler.length;
+  const tamamlanan = rutinler.filter((r) => r.tamamlandi).length;
+  const yuzde = toplam > 0 ? Math.round((tamamlanan / toplam) * 100) : 0;
 
   return (
     <div>
-      {/* Pasta Grafiği Alanı */}
-      <div style={{ maxWidth: '280px', margin: '0 auto 30px auto', textAlign: 'center' }}>
+      {/* Kütüphanesiz CSS Pasta / Daire Grafiği */}
+      <div style={{ textAlign: 'center', marginBottom: '30px' }}>
         <h3>📊 Görev İlerleme Durumu</h3>
-        {rutinler.length > 0 ? (
-          <Pie data={chartData} />
+        {toplam > 0 ? (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+            <div
+              style={{
+                width: '120px',
+                height: '120px',
+                borderRadius: '50%',
+                background: `conic-gradient(#4caf50 0% ${yuzde}%, #ff9800 ${yuzde}% 100%)`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 10px rgba(0,0,0,0.15)'
+              }}
+            >
+              <div
+                style={{
+                  width: '80px',
+                  height: '80px',
+                  borderRadius: '50%',
+                  background: 'rgba(0,0,0,0.2)',
+                  backdropFilter: 'blur(5px)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#fff',
+                  fontWeight: 'bold',
+                  fontSize: '18px'
+                }}
+              >
+                %{yuzde}
+              </div>
+            </div>
+            <div style={{ fontSize: '14px', display: 'flex', gap: '15px' }}>
+              <span style={{ color: '#4caf50', fontWeight: 'bold' }}>● Tamamlanan: {tamamlanan}</span>
+              <span style={{ color: '#ff9800', fontWeight: 'bold' }}>● Kalan: {toplam - tamamlanan}</span>
+            </div>
+          </div>
         ) : (
           <p style={{ fontSize: '14px', opacity: 0.8 }}>Henüz rutin eklenmedi.</p>
         )}
       </div>
 
-      {/* Rutin Ekleme Formu */}
       <form className="input-group" onSubmit={rutinEkle}>
         <input
           type="text"
@@ -93,7 +108,6 @@ function Rutinler() {
         <button type="submit" className="btn-primary">Ekle</button>
       </form>
 
-      {/* Rutin Listesi */}
       <ul className="item-list">
         {rutinler.map((r) => (
           <li key={r.id} className="item-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
