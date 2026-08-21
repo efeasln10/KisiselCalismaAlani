@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "notlar": [
     {
       "id": 1787303834907,
@@ -13,6 +14,9 @@
       "metin": "yem"
     }
   ],
+=======
+  "notlar": [],
+>>>>>>> d937d80ee0483d729bade7137b0c123e8f106d2d
   "rutinler": [],
   "dosyalar": []
 }

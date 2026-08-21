@@ -6,14 +6,14 @@ function Dosyalar() {
   const [url, setUrl] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/dosyalar')
+    fetch('http://localhost:5001/api/dosyalar')
       .then((res) => res.json())
       .then((data) => setDosyalar(data));
   }, []);
 
   const dosyaEkle = () => {
     if (!baslik.trim() || !url.trim()) return;
-    fetch('http://localhost:5000/api/dosyalar', {
+    fetch('http://localhost:5001/api/dosyalar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ baslik, url }),
@@ -27,7 +27,7 @@ function Dosyalar() {
   };
 
   const dosyaSil = (id) => {
-    fetch(`http://localhost:5000/api/dosyalar/${id}`, { method: 'DELETE' })
+    fetch(`http://localhost:5001/api/dosyalar/${id}`, { method: 'DELETE' })
       .then(() => setDosyalar(dosyalar.filter((d) => d.id !== id)));
   };
 
