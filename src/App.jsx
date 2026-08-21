@@ -1,13 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NotDefteri from './NotDefteri';
 import Rutinler from './Rutinler';
 import Dosyalar from './Dosyalar';
 
 function App() {
   const [aktifTab, setAktifTab] = useState('notlar');
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkMode]);
 
   return (
     <div className="app-container">
+      <div className="theme-toggle">
+        <button className="theme-btn" onClick={() => setDarkMode(!darkMode)}>
+          {darkMode ? '☀️ Aydınlık Mod' : '🌙 Karanlık Mod'}
+        </button>
+      </div>
+
       <h2>✨ Kişisel Çalışma Alanı</h2>
       
       <div className="tab-buttons">
