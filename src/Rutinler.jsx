@@ -1,70 +1,114 @@
 import React, { useState, useEffect } from 'react';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Rutinler() {
   const [rutinler, setRutinler] = useState([]);
-  const [yeniGorev, setYeniGorev] = useState('');
+  const [yeniRutin, setYeniRutin] = useState('');
 
   const rutinleriGetir = () => {
-    fetch('http://localhost:5000/api/rutinler')
+    fetch('http://localhost:5001/api/rutinler')
       .then((res) => res.json())
       .then((data) => setRutinler(Array.isArray(data) ? data : []))
-      .catch((err) => console.error('Hata:', err));
+      .catch((err) => console.error('Rutin getirme hatası:', err));
   };
 
   useEffect(() => {
     rutinleriGetir();
   }, []);
 
-  const gorevEkle = (e) => {
+  // Rutin Ekleme
+  const rutinEkle = (e) => {
     e.preventDefault();
-    if (!yeniGorev.trim()) return;
+    if (!yeniRutin.trim()) return;
 
-    fetch('http://localhost:5000/api/rutinler', {
+    fetch('http://localhost:5001/api/rutinler', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ gorev: yeniGorev }),
+      body: JSON.stringify({ metin: yeniRutin, tamamlandi: false }),
     })
       .then((res) => res.json())
       .then(() => {
-        setYeniGorev('');
+        setYeniRutin('');
         rutinleriGetir();
-      });
+      })
+      .catch((err) => console.error('Ekleme hatası:', err));
   };
 
-  const durumDegistir = (id) => {
-    fetch(`http://localhost:5000/api/rutinler/${id}`, { method: 'PUT' })
+  // Tik Atma (Durum Değiştirme)
+  const durumDegistir = (id, mevcutDurum) => {
+    fetch(`http://localhost:5001/api/rutinler/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tamamlandi: !mevcutDurum }),
+    })
+      .then(() => rutinleriGetir())
+      .catch((err) => console.error('Guncelleme hatasi:', err));
+  };
+
+  // Rutin Silme
+  const rutinSil = (id) => {
+    fetch(`http://localhost:5001/api/rutinler/${id}`, { method: 'DELETE' })
       .then(() => rutinleriGetir());
   };
 
-  const gorevSil = (id) => {
-    fetch(`http://localhost:5000/api/rutinler/${id}`, { method: 'DELETE' })
-      .then(() => rutinleriGetir());
+  // Pasta Grafiği İçin Hesaplamalar
+  const tamamlananSayisi = rutinler.filter((r) => r.tamamlandi).length;
+  const kalanSayisi = rutinler.length - tamamlananSayisi;
+
+  const chartData = {
+    labels: ['Tamamlanan', 'Kalan'],
+    datasets: [
+      {
+        data: [tamamlananSayisi, kalanSayisi],
+        backgroundColor: ['#4caf50', '#ff9800'],
+        borderColor: ['#ffffff', '#ffffff'],
+        borderWidth: 2,
+      },
+    ],
   };
 
   return (
     <div>
-      <form className="input-group" onSubmit={gorevEkle}>
+      {/* Pasta Grafiği Alanı */}
+      <div style={{ maxWidth: '280px', margin: '0 auto 30px auto', textAlign: 'center' }}>
+        <h3>📊 Görev İlerleme Durumu</h3>
+        {rutinler.length > 0 ? (
+          <Pie data={chartData} />
+        ) : (
+          <p style={{ fontSize: '14px', opacity: 0.8 }}>Henüz rutin eklenmedi.</p>
+        )}
+      </div>
+
+      {/* Rutin Ekleme Formu */}
+      <form className="input-group" onSubmit={rutinEkle}>
         <input
           type="text"
-          placeholder="Yeni görev ekleyin (Enter'a basabilirsiniz)..."
-          value={yeniGorev}
-          onChange={(e) => setYeniGorev(e.target.value)}
+          placeholder="Yeni rutin/görev ekleyin..."
+          value={yeniRutin}
+          onChange={(e) => setYeniRutin(e.target.value)}
         />
         <button type="submit" className="btn-primary">Ekle</button>
       </form>
 
+      {/* Rutin Listesi */}
       <ul className="item-list">
         {rutinler.map((r) => (
-          <li key={r.id} className="item-card">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <li key={r.id} className="item-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <input
                 type="checkbox"
                 checked={r.tamamlandi || false}
-                onChange={() => durumDegistir(r.id)}
+                onChange={() => durumDegistir(r.id, r.tamamlandi)}
+                style={{ width: '18px', height: '18px', cursor: 'pointer' }}
               />
-              <span className={r.tamamlandi ? 'completed' : ''}>{r.gorev}</span>
+              <span style={{ textDecoration: r.tamamlandi ? 'line-through' : 'none', opacity: r.tamamlandi ? 0.6 : 1 }}>
+                {r.metin}
+              </span>
             </div>
-            <button className="btn-delete" onClick={() => gorevSil(r.id)}>Sil</button>
+            <button className="btn-delete" type="button" onClick={() => rutinSil(r.id)}>Sil</button>
           </li>
         ))}
       </ul>

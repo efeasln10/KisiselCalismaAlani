@@ -4,51 +4,38 @@ import Rutinler from './Rutinler';
 import Dosyalar from './Dosyalar';
 
 function App() {
-  const [aktifTab, setAktifTab] = useState('notlar');
-  const [darkMode, setDarkMode] = useState(false);
+  const [aktifSekme, setAktifSekme] = useState('rutinler');
+  const [tema, setTema] = useState('uzay');
 
   useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-  }, [darkMode]);
+    document.body.className = '';
+    document.body.classList.add(`theme-${tema}`);
+  }, [tema]);
 
   return (
-    <div className="app-container">
-      <div className="theme-toggle">
-        <button className="theme-btn" onClick={() => setDarkMode(!darkMode)}>
-          {darkMode ? '☀️ Aydınlık Mod' : '🌙 Karanlık Mod'}
-        </button>
+    <div className="container">
+      <h1>✨ Kişisel Çalışma Alanı</h1>
+
+      {/* TEMA SEÇİM BUTONLARI */}
+      <div className="theme-selector">
+        <button className="theme-btn" style={{background: '#2c5364', color: '#fff'}} onClick={() => setTema('uzay')}>🚀 Uzay</button>
+        <button className="theme-btn" style={{background: '#71b280', color: '#fff'}} onClick={() => setTema('doga')}>🌿 Doğa</button>
+        <button className="theme-btn" style={{background: '#d7c4b7', color: '#4a3b32'}} onClick={() => setTema('ders')}>📚 Ders</button>
+        <button className="theme-btn" style={{background: '#e9ecef', color: '#333'}} onClick={() => setTema('sade')}>⚪ Sade</button>
       </div>
 
-      <h2>✨ Kişisel Çalışma Alanı</h2>
-      
-      <div className="tab-buttons">
-        <button 
-          className={aktifTab === 'notlar' ? 'active' : ''} 
-          onClick={() => setAktifTab('notlar')}
-        >
-          📝 Not Defteri
-        </button>
-        <button 
-          className={aktifTab === 'rutinler' ? 'active' : ''} 
-          onClick={() => setAktifTab('rutinler')}
-        >
-          📅 Rutinler
-        </button>
-        <button 
-          className={aktifTab === 'dosyalar' ? 'active' : ''} 
-          onClick={() => setAktifTab('dosyalar')}
-        >
-          📁 Dosyalar
-        </button>
+      {/* SEKMELER */}
+      <div className="tab-buttons" style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginBottom: '20px' }}>
+        <button onClick={() => setAktifSekme('rutinler')} className={aktifSekme === 'rutinler' ? 'btn-primary' : ''}>Rutinler & İlerleme</button>
+        <button onClick={() => setAktifSekme('notlar')} className={aktifSekme === 'notlar' ? 'btn-primary' : ''}>Not Defteri</button>
+        <button onClick={() => setAktifSekme('dosyalar')} className={aktifSekme === 'dosyalar' ? 'btn-primary' : ''}>Dosyalar</button>
       </div>
 
-      {aktifTab === 'notlar' && <NotDefteri />}
-      {aktifTab === 'rutinler' && <Rutinler />}
-      {aktifTab === 'dosyalar' && <Dosyalar />}
+      <div className="card">
+        {aktifSekme === 'rutinler' && <Rutinler />}
+        {aktifSekme === 'notlar' && <NotDefteri />}
+        {aktifSekme === 'dosyalar' && <Dosyalar />}
+      </div>
     </div>
   );
 }

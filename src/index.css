@@ -186,3 +186,66 @@ body.dark-mode input[type="text"]::placeholder {
 body.dark-mode .item-card span {
   color: #f1f5f9;
 }
+/* --- TEMA RENKLERİ VE ARKA PLANLAR --- */
+
+/* 1. Uzay Teması */
+body.theme-uzay {
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #e0e6ed;
+}
+body.theme-uzay .item-card, body.theme-uzay .card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* 2. Doğa Teması */
+body.theme-doga {
+  background: linear-gradient(135deg, #134e5e, #71b280);
+  color: #f4f9f4;
+}
+body.theme-doga .item-card, body.theme-doga .card {
+  background: rgba(19, 78, 94, 0.4);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 3. Ders / Kitap Teması */
+body.theme-ders {
+  background: #f5e6d3; /* Sıcak kağıt/kütüphane tonu */
+  color: #4a3b32;
+}
+body.theme-ders .item-card, body.theme-ders .card {
+  background: #fff8f0;
+  border: 1px solid #d7c4b7;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+}
+
+/* 4. Sade / Minimalist Tema */
+body.theme-sade {
+  background: #f8f9fa;
+  color: #212529;
+}
+body.theme-sade .item-card, body.theme-sade .card {
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+}
+
+/* Tema Seçici Buton Grubu */
+.theme-selector {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.theme-btn {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s;
+}
+.theme-btn:hover {
+  transform: scale(1.05);
+}
