@@ -1,15 +1,7 @@
 {
   "notlar": [],
   "rutinler": [],
-  "dosyalar": [
-    {
-      "id": 1787340424671,
-      "ad": "Ãretken_Yapay_ZekÃ¢ya_GiriÅ_Sertifika.pdf",
-      "url": "http://localhost:5001/uploads/1787340424660-Ãretken_Yapay_ZekÃ¢ya_GiriÅ_Sertifika.pdf",
-      "klasor": "Genel",
-      "tip": "application/pdf"
-    }
-  ],
+  "dosyalar": [],
   "klasorler": [
     "Genel",
     "Ders Notları",
