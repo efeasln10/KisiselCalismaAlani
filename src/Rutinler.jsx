@@ -7,39 +7,31 @@ function Rutinler() {
   const rutinleriGetir = () => {
     fetch('http://localhost:5001/api/rutinler')
       .then((res) => res.json())
-      .then((data) => setRutinler(Array.isArray(data) ? data : []))
-      .catch((err) => console.error('Rutin getirme hatası:', err));
+      .then((data) => setRutinler(data))
+      .catch((err) => console.error(err));
   };
 
-  useEffect(() => {
-    rutinleriGetir();
-  }, []);
+  useEffect(() => { rutinleriGetir(); }, []);
 
   const rutinEkle = (e) => {
     e.preventDefault();
     if (!yeniRutin.trim()) return;
-
     fetch('http://localhost:5001/api/rutinler', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ metin: yeniRutin, tamamlandi: false }),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        setYeniRutin('');
-        rutinleriGetir();
-      })
-      .catch((err) => console.error('Ekleme hatası:', err));
+      body: JSON.stringify({ metin: yeniRutin }),
+    }).then(() => {
+      setYeniRutin('');
+      rutinleriGetir();
+    });
   };
 
-  const durumDegistir = (id, mevcutDurum) => {
+  const durumGuncelle = (id, suankiDurum) => {
     fetch(`http://localhost:5001/api/rutinler/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tamamlandi: !mevcutDurum }),
-    })
-      .then(() => rutinleriGetir())
-      .catch((err) => console.error('Güncelleme hatası:', err));
+      body: JSON.stringify({ tamamlandi: !suankiDurum }),
+    }).then(() => rutinleriGetir());
   };
 
   const rutinSil = (id) => {
@@ -47,82 +39,63 @@ function Rutinler() {
       .then(() => rutinleriGetir());
   };
 
-  const toplam = rutinler.length;
-  const tamamlanan = rutinler.filter((r) => r.tamamlandi).length;
-  const yuzde = toplam > 0 ? Math.round((tamamlanan / toplam) * 100) : 0;
+  // Pasta Grafiği Hesaplamaları
+  const tamamlananSayisi = rutinler.filter((r) => r.tamamlandi).length;
+  const oran = rutinler.length === 0 ? 0 : Math.round((tamamlananSayisi / rutinler.length) * 100);
 
   return (
     <div>
-      {/* Kütüphanesiz CSS Pasta / Daire Grafiği */}
-      <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-        <h3>📊 Görev İlerleme Durumu</h3>
-        {toplam > 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-            <div
-              style={{
-                width: '120px',
-                height: '120px',
-                borderRadius: '50%',
-                background: `conic-gradient(#4caf50 0% ${yuzde}%, #ff9800 ${yuzde}% 100%)`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 4px 10px rgba(0,0,0,0.15)'
-              }}
-            >
-              <div
-                style={{
-                  width: '80px',
-                  height: '80px',
-                  borderRadius: '50%',
-                  background: 'rgba(0,0,0,0.2)',
-                  backdropFilter: 'blur(5px)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#fff',
-                  fontWeight: 'bold',
-                  fontSize: '18px'
-                }}
-              >
-                %{yuzde}
-              </div>
-            </div>
-            <div style={{ fontSize: '14px', display: 'flex', gap: '15px' }}>
-              <span style={{ color: '#4caf50', fontWeight: 'bold' }}>● Tamamlanan: {tamamlanan}</span>
-              <span style={{ color: '#ff9800', fontWeight: 'bold' }}>● Kalan: {toplam - tamamlanan}</span>
-            </div>
+      <h3 style={{ textAlign: 'center', marginBottom: '20px' }}>🎯 Rutinler & İlerleme</h3>
+
+      {/* PASTA GRAFİĞİ (Yeşil ve Mavi) */}
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '25px' }}>
+        <div
+          style={{
+            width: '120px', height: '120px', borderRadius: '50%',
+            background: `conic-gradient(#00cec9 ${oran}%, #0984e3 0)`, /* Yeşil ve Mavi */
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
+          }}
+        >
+          <div style={{
+            width: '90px', height: '90px', background: 'white', borderRadius: '50%',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '1.2rem', fontWeight: 'bold', color: '#333'
+          }}>
+            %{oran}
           </div>
-        ) : (
-          <p style={{ fontSize: '14px', opacity: 0.8 }}>Henüz rutin eklenmedi.</p>
-        )}
+        </div>
       </div>
 
-      <form className="input-group" onSubmit={rutinEkle}>
+      {/* ORTALANMIŞ EKLEME FORMU */}
+      <form onSubmit={rutinEkle} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginBottom: '25px' }}>
         <input
           type="text"
-          placeholder="Yeni rutin/görev ekleyin..."
+          placeholder="Yeni rutin ekle..."
           value={yeniRutin}
           onChange={(e) => setYeniRutin(e.target.value)}
+          style={{ width: '80%' }}
         />
-        <button type="submit" className="btn-primary">Ekle</button>
+        {/* Buton ortada ve belirli genişlikte */}
+        <button type="submit" className="btn-primary" style={{ width: '40%' }}>Ekle</button>
       </form>
 
+      {/* RUTİN LİSTESİ */}
       <ul className="item-list">
         {rutinler.map((r) => (
-          <li key={r.id} className="item-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <input
-                type="checkbox"
-                checked={r.tamamlandi || false}
-                onChange={() => durumDegistir(r.id, r.tamamlandi)}
-                style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+          <li key={r.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px', borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <input 
+                type="checkbox" 
+                checked={r.tamamlandi} 
+                onChange={() => durumGuncelle(r.id, r.tamamlandi)} 
+                style={{ transform: 'scale(1.2)', cursor: 'pointer' }}
               />
-              <span style={{ textDecoration: r.tamamlandi ? 'line-through' : 'none', opacity: r.tamamlandi ? 0.6 : 1 }}>
+              <span style={{ textDecoration: r.tamamlandi ? 'line-through' : 'none', opacity: r.tamamlandi ? 0.6 : 1, fontWeight: '600' }}>
                 {r.metin}
               </span>
             </div>
-            <button className="btn-delete" type="button" onClick={() => rutinSil(r.id)}>Sil</button>
+            <button className="btn-delete" onClick={() => rutinSil(r.id)}>Sil</button>
           </li>
         ))}
       </ul>

@@ -3,11 +3,12 @@ import NotDefteri from './NotDefteri';
 import Rutinler from './Rutinler';
 import Dosyalar from './Dosyalar';
 import Zamanlayici from './Zamanlayici';
-import Takvim from './Takvim'; // 1. YENİ BİLEŞENİ İMPORT ETTİK
+import Takvim from './Takvim';
 
 function App() {
-  const [aktifSekme, setAktifSekme] = useState('rutinler');
-  const [tema, setTema] = useState('uzay');
+  // Varsayılan temayı uzay yaptık
+  const [tema, setTema] = useState('uzay'); 
+  const [timerAcik, setTimerAcik] = useState(false);
 
   useEffect(() => {
     document.body.className = '';
@@ -15,36 +16,50 @@ function App() {
   }, [tema]);
 
   return (
-    <div className="container">
-      <h1>✨ Kişisel Çalışma Alanı</h1>
-
-      {/* TEMA SEÇİM BUTONLARI */}
-      <div className="theme-selector">
-        <button className="theme-btn" style={{background: '#2c5364', color: '#fff'}} onClick={() => setTema('uzay')}>🚀 Uzay</button>
-        <button className="theme-btn" style={{background: '#71b280', color: '#fff'}} onClick={() => setTema('doga')}>🌿 Doğa</button>
-        <button className="theme-btn" style={{background: '#d7c4b7', color: '#4a3b32'}} onClick={() => setTema('ders')}>📚 Ders</button>
-        <button className="theme-btn" style={{background: '#e9ecef', color: '#333'}} onClick={() => setTema('sade')}>⚪ Sade</button>
+    <>
+      <div className="left-panel">
+        <div className="card-box dosyalar-wrapper">
+          <Dosyalar />
+        </div>
+        <div className="notlar-wrapper">
+          <NotDefteri />
+        </div>
       </div>
 
-      {/* SEKMELER */}
-      <div className="tab-buttons" style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginBottom: '20px', flexWrap: 'wrap' }}>
-        <button onClick={() => setAktifSekme('rutinler')} className={aktifSekme === 'rutinler' ? 'btn-primary' : ''}>Rutinler & İlerleme</button>
-        <button onClick={() => setAktifSekme('notlar')} className={aktifSekme === 'notlar' ? 'btn-primary' : ''}>Not Defteri</button>
-        <button onClick={() => setAktifSekme('dosyalar')} className={aktifSekme === 'dosyalar' ? 'btn-primary' : ''}>Dosyalar</button>
-        <button onClick={() => setAktifSekme('zamanlayici')} className={aktifSekme === 'zamanlayici' ? 'btn-primary' : ''}>⏱️ Zamanlayıcı</button>
-        {/* 2. TAKVİM BUTONUNU EKLEDİK */}
-        <button onClick={() => setAktifSekme('takvim')} className={aktifSekme === 'takvim' ? 'btn-primary' : ''}>📅 Takvim</button>
+      <div className="header-area">
+        <h1>KİŞİSEL ÇALIŞMA PLATFORMU</h1>
+        <div className="theme-boxes">
+          <div className="theme-box tb-uzay" onClick={() => setTema('uzay')} title="Uzay">🪐</div>
+          <div className="theme-box tb-doga" onClick={() => setTema('doga')} title="Doğa">🌿</div>
+          <div className="theme-box tb-deniz" onClick={() => setTema('deniz')} title="Deniz">🌊</div>
+          <div className="theme-box tb-ders" onClick={() => setTema('ders')} title="Ders">📖</div>
+          <div className="theme-box tb-koyu" onClick={() => setTema('koyu')} title="Koyu">🌙</div>
+          <div className="theme-box tb-acik" onClick={() => setTema('acik')} title="Açık">☀️</div>
+        </div>
       </div>
 
-      <div className="card">
-        {aktifSekme === 'rutinler' && <Rutinler />}
-        {aktifSekme === 'notlar' && <NotDefteri />}
-        {aktifSekme === 'dosyalar' && <Dosyalar />}
-        {aktifSekme === 'zamanlayici' && <Zamanlayici />}
-        {/* 3. TAKVİM BİLEŞENİNİ EKLEDİK */}
-        {aktifSekme === 'takvim' && <Takvim />}
+      <div className="card-box center-panel">
+        <Rutinler />
       </div>
-    </div>
+
+      <div className="right-panel">
+        <button className="btn-timer-open" onClick={() => setTimerAcik(true)}>
+          ⏱️ Zamanlayıcıyı Kur
+        </button>
+        <div className="card-box takvim-wrapper">
+          <Takvim />
+        </div>
+      </div>
+
+      {timerAcik && (
+        <div className="modal-overlay" onClick={(e) => { if (e.target.className === 'modal-overlay') setTimerAcik(false) }}>
+          <div className="modal-content">
+            <button className="btn-close" onClick={() => setTimerAcik(false)}>✖</button>
+            <Zamanlayici />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

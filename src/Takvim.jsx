@@ -115,7 +115,7 @@ function Takvim() {
 
       {/* Sağ Taraf: Günlük Not / Ajanda */}
       <div style={{ borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '20px' }}>
-        <h4>📅 {seciliGun} {ayAdlari[ay]} Notu</h4>
+        <h4>{seciliGun} {ayAdlari[ay]} Notu</h4>
         <form onSubmit={notKaydet} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <textarea
             rows="6"

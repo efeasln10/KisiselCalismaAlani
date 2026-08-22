@@ -8,14 +8,11 @@
       "url": "http://localhost:5001/uploads/1787340424660-Ãretken_Yapay_ZekÃ¢ya_GiriÅ_Sertifika.pdf",
       "klasor": "Genel",
       "tip": "application/pdf"
-    },
-    {
-      "id": 1787340452055,
-      "ad": "10817548688_Ogrenci (1).pdf",
-      "url": "http://localhost:5001/uploads/1787340452051-10817548688_Ogrenci (1).pdf",
-      "klasor": "Genel",
-      "tip": "application/pdf"
     }
   ],
-  "klasorler": ["Genel", "Ders Notları", "Projeler"]
+  "klasorler": [
+    "Genel",
+    "Ders Notları",
+    "Projeler"
+  ]
 }

@@ -1,251 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  background-color: #f4f7f6;
-  color: #333;
+  font-family: 'Open Sans', sans-serif;
+  transition: all 0.4s ease;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* --- 1. UZAY TEMASI (Soft Gece Mavisi + Yıldızlar) --- */
+body.theme-uzay { 
+  background: 
+    radial-gradient(white 1px, transparent 1px) 0 0 / 40px 40px, /* Yıldızlar */
+    linear-gradient(135deg, #0f172a 0%, #1e293b 100%); /* Soft lacivert geçiş */
+  color: #f1f5f9; 
+}
+body.theme-uzay .card-box { background: rgba(30, 41, 59, 0.85); border: 1px solid #334155; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+
+/* --- 2. DOĞA TEMASI (Soft Ferah Yeşil Geçiş) --- */
+body.theme-doga { 
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 50%, #6ee7b7 100%);
+  color: #064e3b; 
+}
+body.theme-doga .card-box { background: rgba(255, 255, 255, 0.9); border: 1px solid #34d399; box-shadow: 0 4px 10px rgba(16,185,129,0.1); }
+
+/* --- 3. DENİZ TEMASI (Koyudan Açığa Mavi Geçiş) --- */
+body.theme-deniz { 
+  background: linear-gradient(135deg, #0284c7 0%, #38bdf8 50%, #bae6fd 100%);
+  color: #0c4a6e; 
+}
+body.theme-deniz .card-box { background: rgba(255, 255, 255, 0.9); border: 1px solid #38bdf8; box-shadow: 0 4px 10px rgba(2,132,199,0.15); }
+
+/* --- 4. DERS TEMASI (Koyu Sarıdan Açık Sarıya Geçiş) --- */
+body.theme-ders { 
+  background: linear-gradient(135deg, #fef08a 0%, #fef9c3 50%, #fefce8 100%); 
+  color: #713f12; 
+}
+body.theme-ders .card-box { background: rgba(255, 255, 255, 0.92); border: 2px solid #fde047; box-shadow: 2px 4px 8px rgba(202,138,4,0.1); }
+
+/* --- 5. KOYU TEMA --- */
+body.theme-koyu { background: #18181b; color: #f4f4f5; }
+body.theme-koyu .card-box { background: #27272a; border: 1px solid #3f3f46; }
+
+/* --- 6. AÇIK TEMA --- */
+body.theme-acik { background: #f8fafc; color: #1e293b; }
+body.theme-acik .card-box { background: white; border: 1px solid #e2e8f0; }
+
+/* --- ANA IZGARA YERLEŞİMİ --- */
+#root {
+  display: grid;
+  grid-template-columns: 320px 1fr 350px;
+  grid-template-rows: auto 1fr;
+  gap: 20px;
+  padding: 20px;
+  height: 100vh;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* BAŞLIK VE TEMALAR */
+.header-area {
+  grid-column: 2;
+  grid-row: 1;
   display: flex;
-  justify-content: center;
-  padding: 40px 20px;
-}
-
-.app-container {
-  background: white;
-  width: 100%;
-  max-width: 700px;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-h2 {
-  color: #2c3e50;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.tab-buttons {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 25px;
-}
-
-.tab-buttons button {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background-color: #e9ecef;
-  color: #495057;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.tab-buttons button.active {
-  background-color: #4f46e5;
-  color: white;
-}
-
-.tab-buttons button:hover:not(.active) {
-  background-color: #dee2e6;
-}
-
-.input-group {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-input[type="text"] {
-  flex: 1;
-  padding: 10px 14px;
-  border: 1px solid #ced4da;
-  border-radius: 6px;
-  font-size: 14px;
-  outline: none;
-}
-
-input[type="text"]:focus {
-  border-color: #4f46e5;
-}
-
-button.btn-primary {
-  padding: 10px 20px;
-  background-color: #4f46e5;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-button.btn-primary:hover {
-  background-color: #4338ca;
-}
-
-.item-list {
-  list-style: none;
-}
-
-.item-card {
-  display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  padding: 12px 16px;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-.btn-delete {
-  background: transparent;
-  border: none;
-  color: #ef4444;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.btn-delete:hover {
-  text-decoration: underline;
-}/* Dark Mode Stilleri */
-body.dark-mode {
-  background-color: #0f172a;
-  color: #f8fafc;
-}
-
-body.dark-mode .app-container {
-  background-color: #1e293b;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-}
-
-body.dark-mode h2 {
-  color: #f1f5f9;
-}
-
-body.dark-mode .tab-buttons button {
-  background-color: #334155;
-  color: #cbd5e1;
-}
-
-body.dark-mode .tab-buttons button.active {
-  background-color: #6366f1;
-  color: white;
-}
-
-body.dark-mode input[type="text"] {
-  background-color: #334155;
-  border-color: #475569;
-  color: #f8fafc;
-}
-
-body.dark-mode .item-card {
-  background-color: #334155;
-  border-color: #475569;
-}
-
-.theme-toggle {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 10px;
-}
-
-.theme-btn {
-  background: none;
-  border: 1px solid #cbd5e1;
-  padding: 6px 12px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-body.dark-mode .theme-btn {
-  border-color: #475569;
-  color: #f8fafc;
-}
-
-.completed {
-  text-decoration: line-through;
-  opacity: 0.6;
-}/* Karanlık Mod Giriş Alanları ve Yazı Renkleri Düzeltmesi */
-body.dark-mode input[type="text"] {
-  background-color: #1e293b;
-  border: 1px solid #475569;
-  color: #ffffff;
-}
-
-body.dark-mode input[type="text"]::placeholder {
-  color: #94a3b8;
-}
-
-body.dark-mode .item-card span {
-  color: #f1f5f9;
-}
-/* --- TEMA RENKLERİ VE ARKA PLANLAR --- */
-
-/* 1. Uzay Teması */
-body.theme-uzay {
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color: #e0e6ed;
-}
-body.theme-uzay .item-card, body.theme-uzay .card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-/* 2. Doğa Teması */
-body.theme-doga {
-  background: linear-gradient(135deg, #134e5e, #71b280);
-  color: #f4f9f4;
-}
-body.theme-doga .item-card, body.theme-doga .card {
-  background: rgba(19, 78, 94, 0.4);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* 3. Ders / Kitap Teması */
-body.theme-ders {
-  background: #f5e6d3; /* Sıcak kağıt/kütüphane tonu */
-  color: #4a3b32;
-}
-body.theme-ders .item-card, body.theme-ders .card {
-  background: #fff8f0;
-  border: 1px solid #d7c4b7;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
-}
-
-/* 4. Sade / Minimalist Tema */
-body.theme-sade {
-  background: #f8f9fa;
-  color: #212529;
-}
-body.theme-sade .item-card, body.theme-sade .card {
-  background: #ffffff;
-  border: 1px solid #e9ecef;
-}
-
-/* Tema Seçici Buton Grubu */
-.theme-selector {
-  display: flex;
-  gap: 10px;
   justify-content: center;
-  margin-bottom: 20px;
 }
-.theme-btn {
-  padding: 8px 14px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  transition: transform 0.2s;
+.header-area h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-align: center;
+  letter-spacing: 1px;
 }
-.theme-btn:hover {
-  transform: scale(1.05);
+.theme-boxes { display: flex; gap: 10px; }
+.theme-box { 
+  width: 35px; height: 35px; border-radius: 8px; cursor: pointer; border: 2px solid rgba(0,0,0,0.15); 
+  transition: transform 0.2s; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
 }
+.theme-box:hover { transform: scale(1.15); }
+
+/* Renk Seçiciler */
+.tb-uzay { background: #0f172a; color: white; }
+.tb-doga { background: #10b981; }
+.tb-deniz { background: #0284c7; }
+.tb-ders { background: #eab308; }
+.tb-koyu { background: #18181b; }
+.tb-acik { background: #f8fafc; }
+
+/* PANELLER */
+.left-panel { grid-column: 1; grid-row: 1 / 3; display: flex; flex-direction: column; gap: 20px; height: 100%; }
+.dosyalar-wrapper { height: 50%; padding: 15px; border-radius: 12px; overflow-y: auto; }
+
+/* Defter Görünümü */
+.notlar-wrapper {
+  flex: 1;
+  background-color: #fcf9b6; 
+  padding: 20px 20px 20px 40px;
+  border-radius: 5px;
+  box-shadow: -2px 4px 10px rgba(0,0,0,0.1);
+  position: relative;
+  background-image: repeating-linear-gradient(transparent, transparent 29px, #74b9ff 30px);
+  line-height: 30px;
+  color: #2d3436;
+  overflow-y: auto;
+}
+.notlar-wrapper::before { content: ''; position: absolute; top: 0; bottom: 0; left: 30px; width: 2px; background-color: #ff7675; }
+.notlar-wrapper * { position: relative; z-index: 1; }
+.notlar-wrapper input { background: transparent; border: 1px solid rgba(0,0,0,0.2); color: #333; }
+
+.center-panel { grid-column: 2; grid-row: 2; padding: 20px; border-radius: 12px; overflow-y: auto; }
+
+/* --- SAĞ PANEL (TAKVİM İÇİN AYARLI) --- */
+.right-panel { 
+  grid-column: 3; 
+  grid-row: 1 / 3; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 20px; 
+  justify-content: flex-start; 
+}
+
+.btn-timer-open {
+  background-color: #0284c7; color: white; border: none; padding: 15px; border-radius: 10px;
+  font-weight: 700; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3); transition: background 0.3s;
+}
+.btn-timer-open:hover { background-color: #0369a1; }
+
+.takvim-wrapper { 
+  padding: 15px; 
+  border-radius: 12px; 
+  height: fit-content; 
+  overflow-y: auto; 
+}
+
+/* ZAMANLAYICI POPUP */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+  display: flex; justify-content: center; align-items: center; z-index: 9999;
+}
+.modal-content { background: white; padding: 30px; border-radius: 15px; width: 350px; position: relative; color: #333; }
+.btn-close { position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #888; }
+
+/* Form & Inputlar */
+input, select, textarea { padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-family: 'Open Sans', sans-serif; }
+.btn-primary { background-color: #0d9488; color: white; padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+.btn-delete { background-color: #f43f5e; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; }
+ul { list-style: none; }
