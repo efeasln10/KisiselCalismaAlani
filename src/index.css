@@ -13,35 +13,35 @@ body {
   overflow: hidden;
 }
 
-/* --- 1. UZAY TEMASI (Soft Gece Mavisi + Yıldızlar) --- */
+/* --- 1. UZAY TEMASI --- */
 body.theme-uzay { 
   background: 
-    radial-gradient(white 1px, transparent 1px) 0 0 / 40px 40px, /* Yıldızlar */
-    linear-gradient(135deg, #0f172a 0%, #1e293b 100%); /* Soft lacivert geçiş */
-  color: #f1f5f9; 
+    radial-gradient(white 1px, transparent 1px) 0 0 / 40px 40px, 
+    linear-gradient(135deg, #1e1b4b 0%, #311042 50%, #1e1b4b 100%);
+  color: #f3f4f6; 
 }
-body.theme-uzay .card-box { background: rgba(30, 41, 59, 0.85); border: 1px solid #334155; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+body.theme-uzay .card-box { background: rgba(30, 27, 75, 0.85); border: 1px solid #4338ca; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
 
-/* --- 2. DOĞA TEMASI (Soft Ferah Yeşil Geçiş) --- */
+/* --- 2. DOĞA TEMASI (368546 -> 52C769 Geçişi) --- */
 body.theme-doga { 
-  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 50%, #6ee7b7 100%);
-  color: #064e3b; 
+  background: linear-gradient(135deg, #368546 0%, #52C769 100%);
+  color: #ffffff; 
 }
-body.theme-doga .card-box { background: rgba(255, 255, 255, 0.9); border: 1px solid #34d399; box-shadow: 0 4px 10px rgba(16,185,129,0.1); }
+body.theme-doga .card-box { background: rgba(54, 133, 70, 0.9); border: 1px solid #52C769; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 
-/* --- 3. DENİZ TEMASI (Koyudan Açığa Mavi Geçiş) --- */
+/* --- 3. DENİZ TEMASI (3EB0C7 -> 4DDBF7 Geçişi) --- */
 body.theme-deniz { 
-  background: linear-gradient(135deg, #0284c7 0%, #38bdf8 50%, #bae6fd 100%);
+  background: linear-gradient(135deg, #3EB0C7 0%, #4DDBF7 100%);
   color: #0c4a6e; 
 }
-body.theme-deniz .card-box { background: rgba(255, 255, 255, 0.9); border: 1px solid #38bdf8; box-shadow: 0 4px 10px rgba(2,132,199,0.15); }
+body.theme-deniz .card-box { background: rgba(255, 255, 255, 0.9); border: 1px solid #3EB0C7; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 
-/* --- 4. DERS TEMASI (Koyu Sarıdan Açık Sarıya Geçiş) --- */
+/* --- 4. DERS TEMASI (C28FAF -> F5B5DD Geçişi) --- */
 body.theme-ders { 
-  background: linear-gradient(135deg, #fef08a 0%, #fef9c3 50%, #fefce8 100%); 
-  color: #713f12; 
+  background: linear-gradient(135deg, #C28FAF 0%, #F5B5DD 100%); 
+  color: #4a1535; 
 }
-body.theme-ders .card-box { background: rgba(255, 255, 255, 0.92); border: 2px solid #fde047; box-shadow: 2px 4px 8px rgba(202,138,4,0.1); }
+body.theme-ders .card-box { background: rgba(255, 255, 255, 0.92); border: 2px solid #C28FAF; box-shadow: 2px 4px 8px rgba(0,0,0,0.1); }
 
 /* --- 5. KOYU TEMA --- */
 body.theme-koyu { background: #18181b; color: #f4f4f5; }
@@ -87,12 +87,12 @@ body.theme-acik .card-box { background: white; border: 1px solid #e2e8f0; }
 .theme-box:hover { transform: scale(1.15); }
 
 /* Renk Seçiciler */
-.tb-uzay { background: #0f172a; color: white; }
-.tb-doga { background: #10b981; }
-.tb-deniz { background: #0284c7; }
-.tb-ders { background: #eab308; }
-.tb-koyu { background: #18181b; }
-.tb-acik { background: #f8fafc; }
+.tb-uzay { background: #311042; color: white; }
+.tb-doga { background: #368546; color: white; }
+.tb-deniz { background: #3EB0C7; color: white; }
+.tb-ders { background: #C28FAF; color: #4a1535; }
+.tb-koyu { background: #18181b; color: white; }
+.tb-acik { background: #f8fafc; color: #1e293b; }
 
 /* PANELLER */
 .left-panel { grid-column: 1; grid-row: 1 / 3; display: flex; flex-direction: column; gap: 20px; height: 100%; }
@@ -128,10 +128,10 @@ body.theme-acik .card-box { background: white; border: 1px solid #e2e8f0; }
 }
 
 .btn-timer-open {
-  background-color: #0284c7; color: white; border: none; padding: 15px; border-radius: 10px;
-  font-weight: 700; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3); transition: background 0.3s;
+  background-color: #3EB0C7; color: white; border: none; padding: 15px; border-radius: 10px;
+  font-weight: 700; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(62, 176, 199, 0.3); transition: background 0.3s;
 }
-.btn-timer-open:hover { background-color: #0369a1; }
+.btn-timer-open:hover { background-color: #3195aa; }
 
 .takvim-wrapper { 
   padding: 15px; 
@@ -151,6 +151,6 @@ body.theme-acik .card-box { background: white; border: 1px solid #e2e8f0; }
 
 /* Form & Inputlar */
 input, select, textarea { padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-family: 'Open Sans', sans-serif; }
-.btn-primary { background-color: #0d9488; color: white; padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+.btn-primary { background-color: #368546; color: white; padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
 .btn-delete { background-color: #f43f5e; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; }
 ul { list-style: none; }
